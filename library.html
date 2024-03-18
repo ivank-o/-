@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            text-align: center;
+            background: rgb(228, 213, 178);
+        }
+
+        form{
+            max-width: 300px;         
+            margin: 0 auto;
+        }
+
+        .container{
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        .container{
+            margin-bottom: 20px;
+        }
+
+        #year{
+            width: 100px;            
+        }
+
+        input{
+            margin-top: 10px;
+        }
+
+        .output{
+            
+            display: flex;
+            flex-direction: column; /* Add this line */
+            border: 1px solid black;
+            background: rgba(228, 213, 178, 0.5);
+            visibility: hidden;
+            width: 200px;
+            margin: 0 auto;
+            margin-top: 30px;
+
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to library</h1>
+    <form id="bookForm">
+        <div class="container">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author">
+        </div>
+        
+
+        <div class="container">
+            <label for="name">Name of the book:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+
+        <div class="container">
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year" min="1900" max="2024" >
+        </div>
+
+        <div class="container">
+            <label for="read">Read</label>
+            <input type="checkbox" name="read" id="read">
+        </div>
+        
+        <input type="submit" value="Add book" id="subBut">
+    </form>
+
+    <div class="output"></div>
+    <script>
+        const submit = document.getElementById('subBut');
+        const output = document.querySelector('.output');
+        const authorInput = document.getElementById('author');
+        const nameInput = document.getElementById('name');
+        const yearInput = document.getElementById('year');
+        const readInput = document.getElementById('read');
+        const bookForm = document.getElementById('bookForm');
+
+        const myLibrary = [];
+
+        function Book(author, name, year, read) {
+            this.name = name;
+            this.author = author;
+            this.year = year;
+            this.read = read;
+        }
+        function createNewBook(){
+            //u don't create an object first, u create variables to store values and then create object based on the values.
+            let author = authorInput.value;
+            let name = nameInput.value;
+            let year = yearInput.value;
+            let read = readInput.checked ? 'Yes' : 'No';
+            
+            return new Book(author, name, year, read);
+        }
+
+        const clearInput = () => {
+            authorInput.value = '';
+            nameInput.value = '';
+            yearInput.value = '';
+            readInput.value = false;
+        }
+        
+
+        function addBookToLibrary(book) {
+            myLibrary.push(book);
+        }
+
+        const displayBooks = () => {
+            output.innerHTML = '';
+            myLibrary.forEach(book => {
+                const bookInfo = document.createElement('div');
+                bookInfo.textContent = `Book: ${book.name}
+                                        Author: ${book.author}
+                                        Read: ${book.read}
+                                        Year: ${book.year}`
+                output.appendChild(bookInfo)
+            })
+        }
+
+        bookForm.addEventListener('submit', function(event){
+            event.preventDefault();
+            const newBook = createNewBook(); //creating new object? 
+            addBookToLibrary(newBook);
+            displayBooks(); //u dont need to do myLibrary.displayBooks cause it's already been done in the function
+            bookForm.reset();
+            output.style.visibility = 'visible';
+        })
+
+
+    </script>
+</body>
+</html>
